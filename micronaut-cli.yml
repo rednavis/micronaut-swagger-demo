@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: com.rednavis.micronaut.petclinic
+---
+testFramework: junit
+sourceLanguage: java
