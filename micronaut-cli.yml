@@ -1,5 +1,5 @@
 profile: service
-defaultPackage: com.rednavis.micronaut.petclinic
+defaultPackage: com.rednavis.micronaut.petstore
 ---
 testFramework: junit
 sourceLanguage: kotlin

@@ -1,4 +1,4 @@
-package com.rednavis.micronaut.petclinic
+package com.rednavis.micronaut.petstore
 
 import io.micronaut.runtime.Micronaut
 
