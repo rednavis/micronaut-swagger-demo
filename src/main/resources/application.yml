@@ -1,3 +1,8 @@
 micronaut:
   application:
     name: micronaut-swagger-demo
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**

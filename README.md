@@ -11,4 +11,10 @@ Demo of exposing REST API with Swagger using Micronaut framework
 
 # How to run
 
+```shell script
+./gradlew run 
+```
+
 # API exposed 
+
+[Swagger](http://localhost:8080/swagger/swagger-petstore-0.0.yml)
