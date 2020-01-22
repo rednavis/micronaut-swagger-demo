@@ -2,9 +2,12 @@ package com.rednavis.micronaut.petstore.pet
 
 import com.rednavis.micronaut.petstore.dto.Pet
 import com.rednavis.micronaut.petstore.dto.PetStatus
+import com.rednavis.micronaut.petstore.exceptions.NotFoundException
 import com.rednavis.micronaut.petstore.util.toMaybe
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * @author Dmitry Tsydzik
@@ -13,6 +16,14 @@ import io.reactivex.Maybe
 class InMemoryPetService(
     private val pets: MutableList<Pet>
 ) : PetService {
+
+    private val nextId: AtomicLong = (pets.asSequence()
+        .filter { it.id != null }
+        .map { it.id!! }
+        .max() ?: 0)
+        .let {
+            AtomicLong(it + 1)
+        }
 
     private val petById: MutableMap<Long, Pet> = pets.asSequence()
         .filter { it.id != null }
@@ -24,4 +35,14 @@ class InMemoryPetService(
 
     override fun findAllByStatus(petStatus: PetStatus): Flowable<Pet> = Flowable.fromIterable(pets)
         .filter { it.status == petStatus }
+
+    override fun deleteById(id: Long): Completable {
+        val index: Int = pets.indexOfFirst { it.id == id }
+        if (index == -1) {
+            return Completable.error(NotFoundException("Pet with id $id not found"))
+        }
+        pets.removeAt(index)
+        petById.remove(id)
+        return Completable.complete()
+    }
 }
