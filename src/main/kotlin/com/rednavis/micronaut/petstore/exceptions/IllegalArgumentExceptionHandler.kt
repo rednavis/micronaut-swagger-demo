@@ -15,9 +15,9 @@ import javax.inject.Singleton
 @Produces
 @Singleton
 @Requirements(
-    Requires(classes = [ExceptionHandler::class, NotFoundException::class])
+    Requires(classes = [ExceptionHandler::class])
 )
-class NotFoundExceptionHandler : ExceptionHandler<NotFoundException, HttpResponse<*>> {
-    override fun handle(request: HttpRequest<*>, exception: NotFoundException): HttpResponse<*> =
-        HttpResponse.notFound(exception.message)
+class IllegalArgumentExceptionHandler : ExceptionHandler<IllegalArgumentException, HttpResponse<*>> {
+    override fun handle(request: HttpRequest<*>, exception: IllegalArgumentException): HttpResponse<*> =
+        HttpResponse.badRequest(exception.message)
 }

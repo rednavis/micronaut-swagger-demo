@@ -5,6 +5,7 @@ import com.rednavis.micronaut.petstore.dto.PetStatus
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
+import io.reactivex.Single
 
 interface PetService {
 
@@ -16,4 +17,7 @@ interface PetService {
 
     fun deleteById(id: Long): Completable
 
+    fun create(pet: Pet): Single<Pet>
+
+    fun update(pet: Pet): Single<Pet>
 }

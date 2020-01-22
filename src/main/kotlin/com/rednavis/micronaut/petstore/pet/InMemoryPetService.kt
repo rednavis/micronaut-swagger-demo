@@ -7,6 +7,8 @@ import com.rednavis.micronaut.petstore.util.toMaybe
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
+import io.reactivex.Single
+import java.lang.IllegalArgumentException
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -21,9 +23,7 @@ class InMemoryPetService(
         .filter { it.id != null }
         .map { it.id!! }
         .max() ?: 0)
-        .let {
-            AtomicLong(it + 1)
-        }
+        .let { AtomicLong(it + 1) }
 
     private val petById: MutableMap<Long, Pet> = pets.asSequence()
         .filter { it.id != null }
@@ -44,5 +44,32 @@ class InMemoryPetService(
         pets.removeAt(index)
         petById.remove(id)
         return Completable.complete()
+    }
+
+    override fun create(pet: Pet): Single<Pet> {
+        if (pet.id == null) {
+            val id = nextId.getAndIncrement()
+            val newPet = pet.copy(id = id)
+            petById[id] = newPet
+            pets.add(newPet)
+            return Single.just(newPet)
+        }
+
+        return update(pet)
+    }
+
+    override fun update(pet: Pet): Single<Pet> {
+        pet.id ?: return Single.error(IllegalArgumentException("Pet id is null"))
+
+        val index = pets.indexOfFirst { it.id == pet.id }
+
+        if (index == -1) {
+            return Single.error(NotFoundException("Pet with id ${pet.id} not found"))
+        }
+
+        pets[index] = pet
+        petById[pet.id] = pet
+
+        return Single.just(pet)
     }
 }
