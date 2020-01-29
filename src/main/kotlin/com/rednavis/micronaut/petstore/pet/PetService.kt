@@ -1,23 +1,24 @@
 package com.rednavis.micronaut.petstore.pet
 
 import com.rednavis.micronaut.petstore.dto.Pet
+import com.rednavis.micronaut.petstore.dto.PetRequest
 import com.rednavis.micronaut.petstore.dto.PetStatus
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Maybe
-import io.reactivex.Single
+import com.rednavis.micronaut.petstore.exceptions.NotFoundException
 
 interface PetService {
 
-    fun findById(id: Long): Maybe<Pet>
+    @Throws(NotFoundException::class)
+    suspend fun findById(id: Long): Pet
 
-    fun findAll(): Flowable<Pet>
+    suspend fun findAll(): List<Pet>
 
-    fun findAllByStatus(petStatus: PetStatus): Flowable<Pet>
+    suspend fun findAllByStatus(petStatus: PetStatus): List<Pet>
 
-    fun deleteById(id: Long): Completable
+    @Throws(NotFoundException::class)
+    suspend fun deleteById(id: Long)
 
-    fun create(pet: Pet): Single<Pet>
+    suspend fun create(petRequest: PetRequest): Pet
 
-    fun update(pet: Pet): Single<Pet>
+    @Throws(NotFoundException::class)
+    suspend fun update(id: Long, petRequest: PetRequest): Pet
 }

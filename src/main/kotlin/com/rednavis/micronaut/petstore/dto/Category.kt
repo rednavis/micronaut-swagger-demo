@@ -6,5 +6,5 @@ package com.rednavis.micronaut.petstore.dto
  */
 data class Category(
     val id: Long,
-    val name: String?
+    val name: String
 )
