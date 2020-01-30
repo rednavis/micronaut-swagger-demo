@@ -50,8 +50,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("io.mockk:mockk:1.9.3")
+    testImplementation("io.kotlintest:kotlintest-assertions:3.2.1")
+    testImplementation("io.ktor:ktor-client-apache:1.3.0")
+    testImplementation("io.ktor:ktor-client-jackson:1.3.0")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.3.3")
 }
 
 application {

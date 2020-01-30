@@ -8,7 +8,7 @@ data class Pet(
     val id: Long,
     val category: Category,
     val name: String,
-    val photoUrls: List<String>,
-    val tags: List<Tag>,
+    val photoUrls: List<String> = emptyList(),
+    val tags: List<Tag> = emptyList(),
     val status: PetStatus
 )
